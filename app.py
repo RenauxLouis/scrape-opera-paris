@@ -20,14 +20,19 @@ SENDER_EMAIL = "strike.price.notification@gmail.com"
 SENDER_PASSWORD = os.environ.get("PASSWORD")
 RECEIVER_EMAILS = ["renauxlouis@gmail.com"]
 
-display = Display(visible=False, size=(1024, 768))
-display.start()
-
 def parse(url):
-    response = webdriver.Firefox()
-    response.get(url)
+
+    display = Display(visible=False, size=(1024, 768))
+    display.start()
+
+    driver = webdriver.Firefox()
+    driver.get(url)
     sleep(3)
-    source_code = response.page_source
+    source_code = driver.page_source
+
+    driver.quit()
+    display.stop()
+    
     return  source_code
 
 
