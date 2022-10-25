@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from time import sleep
 import os
+from pyvirtualdisplay import Display
 
 import requests
 from bs4 import BeautifulSoup
@@ -19,6 +20,8 @@ SENDER_EMAIL = "strike.price.notification@gmail.com"
 SENDER_PASSWORD = os.environ.get("PASSWORD")
 RECEIVER_EMAILS = ["renauxlouis@gmail.com"]
 
+display = Display(visible=False, size=(1024, 768))
+display.start()
 
 def parse(url):
     response = webdriver.Firefox()
