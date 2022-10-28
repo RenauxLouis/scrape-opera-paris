@@ -16,7 +16,7 @@ session = requests.Session()
 
 FIGARO_URL = "https://www.operadeparis.fr/saison-22-23/opera/les-noces-de-figaro"
 SWAN_LAKE_URL = "https://www.operadeparis.fr/saison-22-23/ballet/le-lac-des-cygnes"
-URLS_TO_CHECK = [FIGARO_URL, SWAN_LAKE_URL]
+URLS_TO_CHECK = [SWAN_LAKE_URL]#, FIGARO_URL]
 VALID_DATES_PER_URL = {
     FIGARO_URL: [
         "23/mer./nov.",
@@ -52,7 +52,7 @@ INVALID_PRICES_PER_URL = {
 
 SENDER_EMAIL = "strike.price.notification@gmail.com"
 SENDER_PASSWORD = os.environ.get("PASSWORD")
-RECEIVER_EMAILS = ["renauxlouis@gmail.com"]
+RECEIVER_EMAILS = ["renauxlouis@gmail.com", "rehajhunjhunwala@gmail.com"]
 
 def parse(url):
 
