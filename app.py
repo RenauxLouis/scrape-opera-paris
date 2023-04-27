@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from time import sleep
 import os
 from pyvirtualdisplay import Display
+import sys
 
 import requests
 from bs4 import BeautifulSoup
@@ -110,7 +111,6 @@ def scape_opera_page(soup, url):
     dates_ul = calendar_div.find_all("ul", {"class": "component__list"})[0]
     dates_tables = dates_ul.find_all("li")
     for date_table in dates_tables:
-        print(date_table)
         date = "/".join([date_tag.text for date_tag in date_table.find_all("span")[:3]])
         uls = date_table.find_all("ul")
         if uls:
@@ -127,10 +127,10 @@ def scape_opera_page(soup, url):
 def run_scrape():
 
     for url in URLS_TO_CHECK:
-        print(url)
         soup = soup_http_download(url)
-        print(soup)
         scape_opera_page(soup, url)
+    
+    create_secure_connection_and_send_email("OPERA AVAILABILITY", "test_email")
 
 
 if __name__ == "__main__":
