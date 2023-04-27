@@ -127,7 +127,9 @@ def scape_opera_page(soup, url):
 def run_scrape():
 
     for url in URLS_TO_CHECK:
+        print(url)
         soup = soup_http_download(url)
+        print(soup)
         scape_opera_page(soup, url)
 
 
