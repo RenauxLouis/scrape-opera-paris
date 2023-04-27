@@ -16,7 +16,8 @@ from selenium import webdriver
 session = requests.Session()
 
 ARIODANTE_URL = "https://www.operadeparis.fr/saison-22-23/opera/ariodante"
-URLS_TO_CHECK = [ARIODANTE_URL]
+MAURICE_BEJART_URL = "https://www.operadeparis.fr/saison-22-23/ballet/maurice-bejart"
+URLS_TO_CHECK = [ARIODANTE_URL, MAURICE_BEJART_URL]
 VALID_DATES_PER_URL = {
     ARIODANTE_URL: [
         "30/dim./avr.",
@@ -28,6 +29,13 @@ VALID_DATES_PER_URL = {
         "16/mar./mai.",
         "18/jeu./mai.",
         "20/sam./mai.",
+    ],
+    MAURICE_BEJART_URL: [
+        "30/dim./avr."
+        "03/mer./mai."
+        "04/jeu./mai."
+        "06/sam./mai."
+        "12/ven./mai."
     ]
 }
 INVALID_PRICES_PER_URL = {
