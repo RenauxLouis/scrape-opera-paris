@@ -8,6 +8,6 @@ Python
 
 ```
 python3 -m venv .env
-source .env/bin/acivate
+source .env/bin/activate
 pip install -r requirements.txt
 ```
