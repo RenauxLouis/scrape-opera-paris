@@ -14,45 +14,28 @@ from selenium import webdriver
 
 session = requests.Session()
 
-FIGARO_URL = "https://www.operadeparis.fr/saison-22-23/opera/les-noces-de-figaro"
-SWAN_LAKE_URL = "https://www.operadeparis.fr/saison-22-23/ballet/le-lac-des-cygnes"
-URLS_TO_CHECK = [SWAN_LAKE_URL]#, FIGARO_URL]
+ARIODANTE_URL = "https://www.operadeparis.fr/saison-22-23/opera/ariodante"
+URLS_TO_CHECK = [ARIODANTE_URL]
 VALID_DATES_PER_URL = {
-    FIGARO_URL: [
-        "23/mer./nov.",
-        "25/ven./nov.",
-        "27/dim./nov.",
-        "30/mer./nov.",
-        "07/mer./déc.",
-        "11/dim./déc.",
-        "13/mar./déc.",
-        "16/ven./déc.",
-        "19/lun./déc.",
-        "22/jeu./déc.",
-        "25/dim./déc.",
-    ],
-    SWAN_LAKE_URL: [
-        "10/sam./déc.",
-        "11/dim./déc.",
-        "13/mar./déc.",
-        "14/mer./déc.",
-        "16/ven./déc.",
-        "17/sam./déc.",
-        "19/lun./déc.",
-        "20/mar./déc.",
-        "22/jeu./déc.", 
-        "23/ven./déc.", 
-        "25/dim./déc."
+    ARIODANTE_URL: [
+        "30/dim./avr.",
+        "02/mar./mai.",
+        "07/dim./mai.",
+        "09/mar./mai.",
+        "11/jeu./mai.",
+        "14/dim./mai.",
+        "16/mar./mai.",
+        "18/jeu./mai.",
+        "20/sam./mai.",
     ]
 }
 INVALID_PRICES_PER_URL = {
-    FIGARO_URL: ["25 €"],
-    SWAN_LAKE_URL: []
+    ARIODANTE_URL: []
 }
 
 SENDER_EMAIL = "strike.price.notification@gmail.com"
 SENDER_PASSWORD = os.environ.get("PASSWORD")
-RECEIVER_EMAILS = ["renauxlouis@gmail.com", "rehajhunjhunwala@gmail.com"]
+RECEIVER_EMAILS = ["renauxlouis@gmail.com"]
 
 def parse(url):
 
@@ -127,6 +110,7 @@ def scape_opera_page(soup, url):
     dates_ul = calendar_div.find_all("ul", {"class": "component__list"})[0]
     dates_tables = dates_ul.find_all("li")
     for date_table in dates_tables:
+        print(date_table)
         date = "/".join([date_tag.text for date_tag in date_table.find_all("span")[:3]])
         uls = date_table.find_all("ul")
         if uls:
