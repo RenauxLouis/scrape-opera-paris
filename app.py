@@ -39,7 +39,8 @@ VALID_DATES_PER_URL = {
     ]
 }
 INVALID_PRICES_PER_URL = {
-    ARIODANTE_URL: []
+    ARIODANTE_URL: [],
+    MAURICE_BEJART_URL: []
 }
 
 SENDER_EMAIL = "strike.price.notification@gmail.com"
