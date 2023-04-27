@@ -126,9 +126,9 @@ def scape_opera_page(soup, url):
 
 def run_scrape():
 
-    for url in URLS_TO_CHECK:
-        soup = soup_http_download(url)
-        scape_opera_page(soup, url)
+    # for url in URLS_TO_CHECK:
+    #     soup = soup_http_download(url)
+    #     scape_opera_page(soup, url)
     
     create_secure_connection_and_send_email("OPERA AVAILABILITY", "test_email")
 
