@@ -36,6 +36,7 @@ INVALID_PRICES_PER_URL = {
 
 SENDER_EMAIL = "strike.price.notification@gmail.com"
 SENDER_PASSWORD = os.environ.get("PASSWORD")
+print(SENDER_PASSWORD)
 RECEIVER_EMAILS = ["renauxlouis@gmail.com"]
 
 def parse(url):
