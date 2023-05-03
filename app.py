@@ -17,7 +17,7 @@ session = requests.Session()
 
 ARIODANTE_URL = "https://www.operadeparis.fr/saison-22-23/opera/ariodante"
 MAURICE_BEJART_URL = "https://www.operadeparis.fr/saison-22-23/ballet/maurice-bejart"
-URLS_TO_CHECK = [ARIODANTE_URL, MAURICE_BEJART_URL]
+URLS_TO_CHECK = [MAURICE_BEJART_URL]
 VALID_DATES_PER_URL = {
     ARIODANTE_URL: [
         "30/dim./avr.",
@@ -31,11 +31,10 @@ VALID_DATES_PER_URL = {
         "20/sam./mai.",
     ],
     MAURICE_BEJART_URL: [
-        "30/dim./avr."
-        "03/mer./mai."
-        "04/jeu./mai."
-        "06/sam./mai."
-        "12/ven./mai."
+        "10/mer./mai",
+        "12/ven./mai",
+        # "13/sam./mai",
+        "16/mar./mai"
     ]
 }
 INVALID_PRICES_PER_URL = {
@@ -52,7 +51,7 @@ def parse(url):
     display = Display(visible=False, size=(1024, 768))
     display.start()
 
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(executable_path="/home/ubuntu/geckodriver")
     driver.get(url)
     sleep(3)
     source_code = driver.page_source
@@ -102,35 +101,43 @@ def send_email(server, receiver_email, title, content):
     server.sendmail(SENDER_EMAIL, receiver_email, msg_root.as_string())
 
 
-def seat_selector(url, color, place_category, date):
+def seat_selector(date_table, valid_dates, invalid_prices, date):
 
-    valid_dates = VALID_DATES_PER_URL[url]
-    invalid_prices = INVALID_PRICES_PER_URL[url]
+    if date not in valid_dates:
+        return False
 
-    available = not "#CCCCCC" in color
-    good_seat = place_category.find_all("p")[1].text not in invalid_prices
-    good_date = date in valid_dates
+    uls = date_table.find_all("ul")
+    if not uls:
+        return False
 
-    return available and good_seat and good_date
+    categories_table = uls[0]
+    place_categories = categories_table.find_all("li")
+    
+    available_places = [place for place in place_categories if "entry-disabled" not in place["class"]]
+
+    for place in available_places:
+        
+        good_seat = place.find_all("p")[1].text not in invalid_prices
+
+        if good_seat:
+            return True
 
 
 def scape_opera_page(soup, url):
+
+    valid_dates = VALID_DATES_PER_URL[url]
+    invalid_prices = INVALID_PRICES_PER_URL[url]
 
     calendar_div = soup.find("div", {"id": "calendar"})
     dates_ul = calendar_div.find_all("ul", {"class": "component__list"})[0]
     dates_tables = dates_ul.find_all("li")
     for date_table in dates_tables:
-        date = "/".join([date_tag.text for date_tag in date_table.find_all("span")[:3]])
-        uls = date_table.find_all("ul")
-        if uls:
-            categories_table = uls[0]
-            place_categories = categories_table.find_all("li")
-            for place_category in place_categories:
-                color = place_category.find_all("span")[0]["style"]
 
-                seat_available = seat_selector(url, color, place_category, date)
-                if seat_available:
-                    create_secure_connection_and_send_email("OPERA AVAILABILITY", url)
+        date = "/".join([date_tag.text for date_tag in date_table.find_all("span")[:3]])
+        selected_seat = seat_selector(date_table, valid_dates, invalid_prices, date)
+        if selected_seat:
+            email_content = url + "    " + date
+            create_secure_connection_and_send_email("OPERA AVAILABILITY", email_content)
 
 
 def run_scrape():
